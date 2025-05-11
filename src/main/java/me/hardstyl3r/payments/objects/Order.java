@@ -1,5 +1,10 @@
 package me.hardstyl3r.payments.objects;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.List;
 
 public class Order {
@@ -23,5 +28,39 @@ public class Order {
 
     public List<String> getPromotions() {
         return promotions;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Order that = (Order) obj;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(value, that.value)
+                .append(promotions, that.promotions)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(value)
+                .append(promotions)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+                .append("id", id)
+                .append("value", value)
+                .append("promotions", promotions)
+                .toString();
     }
 }
