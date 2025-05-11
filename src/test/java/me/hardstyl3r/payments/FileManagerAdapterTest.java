@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("FieldCanBeLocal")
 // This class is used to test the FileManager class along with Order and PayMethod adapters, so essentially
@@ -102,5 +102,11 @@ public class FileManagerAdapterTest {
         Set<PayMethod> payMethodsFromJson = payMethodFileManager.getFromJson(pmJson);
 
         assertEquals(payMethods, payMethodsFromJson);
+    }
+
+    @Test
+    public void testGetOrders() {
+        FileManager<Order> fileManager = new FileManager<>(Order.class, new OrderAdapter());
+        assertNull(fileManager.getFromJson("invalid json"));
     }
 }
