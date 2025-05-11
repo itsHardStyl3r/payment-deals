@@ -3,11 +3,13 @@ package me.hardstyl3r.payments;
 import me.hardstyl3r.payments.adapters.OrderAdapter;
 import me.hardstyl3r.payments.adapters.PayMethodAdapter;
 import me.hardstyl3r.payments.managers.FileManager;
+import me.hardstyl3r.payments.managers.ShopManager;
 import me.hardstyl3r.payments.objects.Order;
 import me.hardstyl3r.payments.objects.PayMethod;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Set;
 
 public class Main {
@@ -31,13 +33,12 @@ public class Main {
         }
 
         Set<Order> orders = orderManager.getFromJson(ordersJson);
-        for (Order order : orders)
-            System.out.println("Order ID: " + order.getId() + "," +
-                    "Value: " + order.getValue() + ", Promotions: " + order.getPromotions());
-
         Set<PayMethod> payMethods = payMethodManager.getFromJson(payMethodsJson);
-        for (PayMethod payMethod : payMethods)
-            System.out.println("Payment Method ID: " + payMethod.getId() + "," +
-                    "Discount: " + payMethod.getDiscount() + "," + "Limit: " + payMethod.getLimit());
+
+        ShopManager shopManager = new ShopManager(payMethods);
+        Map<String, Double> receipts = shopManager.finalizeOrder(orders);
+        receipts.forEach((key, value) -> {
+            System.out.println(key + " " + value);
+        });
     }
 }
